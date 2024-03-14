@@ -1,5 +1,9 @@
 name: facebook/redex/build_main
 on:
+  pull_request:
+    branches:
+    - main
+    - stable
   push:
     branches:
     - main
@@ -7,12 +11,9 @@ env:
   CACHE_VERSION: xxxxx1
 jobs:
   build-20_04:
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    container:
-      image: buildpack-deps:focal
+    runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v4.1.0
+    - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
       with:
         job_name: ubuntu_20.04
@@ -27,8 +28,16 @@ jobs:
       with:
         use_sdk: false
         job_name: debian_10
+  build-deb_stable:
+    runs-on: ubuntu-latest
+    container:
+      image: buildpack-deps:stable-scm
+    steps:
+    - uses: actions/checkout@v4.1.0
+    - uses: "./.github/actions/build_debian"
+      with:
+        job_name: debian_12
   build-deb_stable-32:
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     container:
       image: buildpack-deps:stable-scm
@@ -39,7 +48,6 @@ jobs:
         mode_32: true
         job_name: debian_12_32
   build-deb_unstable:
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     container:
       image: buildpack-deps:unstable-scm
@@ -49,7 +57,6 @@ jobs:
       with:
         job_name: debian_unstable
   build-deb_stable-w-clang-llvm-org:
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     container:
       image: buildpack-deps:stable-scm
@@ -64,7 +71,6 @@ jobs:
         install_clang_llvm_org: "${{ env.clang_version }}"
         job_name: debian_12_clang_upstream
   build-windows:
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4.1.0

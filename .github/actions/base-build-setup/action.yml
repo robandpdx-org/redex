@@ -9,33 +9,21 @@ inputs:
 runs:
   using: composite
   steps:
-  - name: restore_cache
+  - name: Cache boost
+    if: "${{ inputs.save_boost_cache }}"
     uses: actions/cache@v3.3.2
     with:
       key: boost-1-71-0-v5
-      path: UPDATE_ME
-      restore-keys: boost-1-71-0-v5
-  - name: restore_cache
+      path: "/tmp/toolchain/dl_cache/boost_cache"
+  - name: Cache protobuf
+    if: "${{ inputs.save_boost_cache }}"
     uses: actions/cache@v3.3.2
     with:
       key: protobuf3-v3
-      path: UPDATE_ME
-      restore-keys: protobuf3-v3
+      path: "/tmp/toolchain/dl_cache/protobuf"
   - name: Setup
     run: sudo -E ./setup_oss_toolchain.sh ${{ inputs.setup_toolchain_extra }}
     working-directory: repo
     env:
       TOOLCHAIN_TMP: "/tmp/toolchain"
     shell: bash
-  - name: save_cache
-    uses: actions/cache@v3.3.2
-    with:
-      path: "/tmp/toolchain/dl_cache/boost_cache"
-      key: boost-1-71-0-v5
-    if: "${{ inputs.save_boost_cache }}"
-  - name: save_cache
-    uses: actions/cache@v3.3.2
-    with:
-      path: "/tmp/toolchain/dl_cache/protobuf"
-      key: protobuf3-v3
-    if: "${{ inputs.save_boost_cache }}"
