@@ -1,0 +1,22 @@
+name: setup-build-and-test-windows
+runs:
+  using: composite
+  steps:
+  - name: Install MSYS2
+    run: choco install msys2 -y
+    shell: bash.exe
+  - name: Update MSYS2 package DB
+    run: pacman -Syuu --noconfirm
+    shell: c:/tools/msys64/msys2_shell.cmd -defterm -no-start -msys2 -full-path -here -c
+  - name: Setup
+    run: pacman -S --needed --noconfirm make mingw-w64-x86_64-boost mingw-w64-x86_64-cmake mingw-w64-x86_64-gcc mingw-w64-x86_64-jsoncpp mingw-w64-x86_64-make zip unzip mingw-w64-x86_64-python
+    shell: c:/tools/msys64/msys2_shell.cmd -defterm -no-start -msys2 -full-path -here -c
+  - name: Build
+    run: mkdir build && cd build && cmake -G "MSYS Makefiles" .. && make -j 4 V=0
+    shell: c:/tools/msys64/msys2_shell.cmd -defterm -no-start -mingw64 -full-path -here -c
+  - name: Minimal Test
+    run: 'build/redex-all --show-passes | grep -E "Registered passes: [1-9][0-9]*"'
+    shell: bash.exe
+  - name: Package
+    run: cd build && make -j 4 package V=0
+    shell: c:/tools/msys64/msys2_shell.cmd -defterm -no-start -mingw64 -full-path -here -c
