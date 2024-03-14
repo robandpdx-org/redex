@@ -28,7 +28,7 @@ runs:
     shell: bash
   - name: Install Clang (apt.llvm.org)
     run: |-
-      sudo apt-get install -y --no-install-recommends lsb-release wget software-properties-common gnupg
+      #sudo apt-get install -y --no-install-recommends lsb-release software-properties-common
       sudo /bin/bash -c "$(wget -O - https://apt.llvm.org/llvm.sh | sed -e 's/^add-apt-repository.*$/& -y\n& -y/')"
       ls /usr/bin/clang*
       sudo ln -s /usr/bin/clang-?? /usr/bin/clang
@@ -37,7 +37,7 @@ runs:
     shell: bash
   - name: Install Clang (apt.llvm.org)
     run: |-
-      sudo apt-get install -y --no-install-recommends lsb-release wget software-properties-common gnupg
+      #sudo apt-get install -y --no-install-recommends lsb-release software-properties-common
       sudo /bin/bash -c "$(wget -O - https://apt.llvm.org/llvm.sh | sed -e 's/^add-apt-repository.*$/& -y\n& -y/')" "llvm.sh" ${{ inputs.install_clang_llvm_org }}
       ls /usr/bin/clang*
       sudo ln -s /usr/bin/clang-?? /usr/bin/clang
