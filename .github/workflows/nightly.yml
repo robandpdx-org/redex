@@ -11,7 +11,7 @@ jobs:
     container:
       image: buildpack-deps:focal
     steps:
-    - uses: actions/checkout@v4.1.0
+    - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
       with:
         job_name: ubuntu_20.04
@@ -20,7 +20,7 @@ jobs:
     container:
       image: ubuntu
     steps:
-    - uses: actions/checkout@v4.1.0
+    - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
       with:
         job_name: ubuntu_22.04
@@ -29,7 +29,7 @@ jobs:
     container:
       image: buildpack-deps:oldoldstable-scm
     steps:
-    - uses: actions/checkout@v4.1.0
+    - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
       with:
         use_sdk: false
@@ -39,7 +39,7 @@ jobs:
     container:
       image: buildpack-deps:stable-scm
     steps:
-    - uses: actions/checkout@v4.1.0
+    - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
       with:
         job_name: debian_12
@@ -51,7 +51,7 @@ jobs:
       CC: clang
       CXX: clang++
     steps:
-    - uses: actions/checkout@v4.1.0
+    - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
       with:
         install_clang: true
@@ -61,7 +61,7 @@ jobs:
     container:
       image: buildpack-deps:stable-scm
     steps:
-    - uses: actions/checkout@v4.1.0
+    - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
       with:
         mode_32: true
@@ -71,14 +71,14 @@ jobs:
     container:
       image: buildpack-deps:unstable-scm
     steps:
-    - uses: actions/checkout@v4.1.0
+    - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
       with:
         job_name: debian_unstable
   build-windows-artifacts:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4.1.0
+    - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/setup-build-and-test-windows"
     - name: Copy package for CircleCI
       run: mkdir artifacts && mv build/Redex*.zip artifacts/
@@ -100,7 +100,7 @@ jobs:
         - 15
         - 17
     steps:
-    - uses: actions/checkout@v4.1.0
+    - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
       with:
         install_clang_llvm_org: "${{ matrix.clang_version }}"

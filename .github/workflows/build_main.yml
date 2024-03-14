@@ -19,45 +19,45 @@ jobs:
         job_name: ubuntu_20.04
   build-deb_oldoldstable:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container:
       image: buildpack-deps:oldoldstable-scm
     steps:
-    - uses: actions/checkout@v4.1.0
+    - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
       with:
         use_sdk: false
         job_name: debian_10
   build-deb_stable:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container:
       image: buildpack-deps:stable-scm
     steps:
-    - uses: actions/checkout@v4.1.0
+    - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
       with:
         job_name: debian_12
   build-deb_stable-32:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container:
       image: buildpack-deps:stable-scm
     steps:
-    - uses: actions/checkout@v4.1.0
+    - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
       with:
         mode_32: true
         job_name: debian_12_32
   build-deb_unstable:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container:
       image: buildpack-deps:unstable-scm
     steps:
-    - uses: actions/checkout@v4.1.0
+    - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
       with:
         job_name: debian_unstable
   build-deb_stable-w-clang-llvm-org:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container:
       image: buildpack-deps:stable-scm
     env:
@@ -65,7 +65,7 @@ jobs:
       CXX: clang++
       clang_version: 0
     steps:
-    - uses: actions/checkout@v4.1.0
+    - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
       with:
         install_clang_llvm_org: "${{ env.clang_version }}"
@@ -73,5 +73,5 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v4.1.0
+    - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/setup-build-and-test-windows"
