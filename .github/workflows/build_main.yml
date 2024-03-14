@@ -7,6 +7,8 @@ on:
   push:
     branches:
     - main
+  schedule:
+    - cron: 0 0 * * *
 env:
   CACHE_VERSION: xxxxx1
 jobs:
@@ -17,11 +19,15 @@ jobs:
     - uses: "./.github/actions/build_debian"
       with:
         job_name: ubuntu_20.04
+  build-22_04:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4.1.1
+    - uses: "./.github/actions/build_debian"
+      with:
+        job_name: ubuntu_22.04
   build-deb_oldoldstable:
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-20.04
-    container:
-      image: buildpack-deps:oldoldstable-scm
     steps:
     - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
@@ -30,8 +36,6 @@ jobs:
         job_name: debian_10
   build-deb_stable:
     runs-on: ubuntu-20.04
-    container:
-      image: buildpack-deps:stable-scm
     steps:
     - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
@@ -39,8 +43,6 @@ jobs:
         job_name: debian_12
   build-deb_stable-32:
     runs-on: ubuntu-20.04
-    container:
-      image: buildpack-deps:stable-scm
     steps:
     - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
@@ -49,8 +51,6 @@ jobs:
         job_name: debian_12_32
   build-deb_unstable:
     runs-on: ubuntu-20.04
-    container:
-      image: buildpack-deps:unstable-scm
     steps:
     - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
@@ -58,8 +58,6 @@ jobs:
         job_name: debian_unstable
   build-deb_stable-w-clang-llvm-org:
     runs-on: ubuntu-20.04
-    container:
-      image: buildpack-deps:stable-scm
     env:
       CC: clang
       CXX: clang++
