@@ -17,9 +17,9 @@ runs:
   # - name: Update MSYS2 package DB
   #   run: pacman -Syuu --noconfirm
   #   shell: msys2 {0}
-  # - name: Setup
-  #   run: pacman -S --needed --noconfirm make mingw-w64-x86_64-boost mingw-w64-x86_64-cmake mingw-w64-x86_64-gcc mingw-w64-x86_64-jsoncpp mingw-w64-x86_64-make zip unzip mingw-w64-x86_64-python
-  #   shell: msys2 {0}
+  - name: Setup
+    run: pacman -S --needed --noconfirm make zip unzip 
+    shell: msys2 {0}
   - name: Build
     run: mkdir build && cd build && cmake -G "MSYS Makefiles" .. && make -j 4 V=0
     shell: msys2 {0}
