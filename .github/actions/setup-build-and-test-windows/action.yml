@@ -14,9 +14,6 @@ runs:
         jsoncpp
         make
         python
-  # - name: Update MSYS2 package DB
-  #   run: pacman -Syuu --noconfirm
-  #   shell: msys2 {0}
   - name: Setup
     run: pacman -S --needed --noconfirm make zip unzip 
     shell: msys2 {0}

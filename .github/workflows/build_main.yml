@@ -20,6 +20,8 @@ jobs:
       with:
         job_name: ubuntu_20.04
   build-22_04:
+    # if github.event_name is schedule, run this job
+    if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4.1.1
@@ -57,6 +59,7 @@ jobs:
       with:
         job_name: debian_unstable
   build-deb_stable-w-clang-llvm-org:
+    if: github.event_name != 'schedule'
     runs-on: ubuntu-20.04
     env:
       CC: clang
@@ -73,3 +76,34 @@ jobs:
     steps:
     - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/setup-build-and-test-windows"
+  build-windows-artifacts:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4.1.1
+    - uses: "./.github/actions/setup-build-and-test-windows"
+    - name: Copy package for github actions
+      run: mkdir artifacts && mv build/Redex*.zip artifacts/
+      shell: c:/tools/msys64/msys2_shell.cmd -defterm -no-start -mingw64 -full-path -here -c
+    - uses: actions/upload-artifact@v4.0.0
+      with:
+        path: ".\\artifacts"
+  build-deb_stable-w-clang-llvm-org_nightly:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    env:
+      CC: clang
+      CXX: clang++
+    strategy:
+      matrix:
+        clang_version:
+        - 0
+        - 15
+        - 17
+    steps:
+    - uses: actions/checkout@v4.1.1
+    - uses: "./.github/actions/build_debian"
+      with:
+        install_clang_llvm_org: "${{ matrix.clang_version }}"
+        job_name: debian_12_clang_upstream
+      

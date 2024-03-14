@@ -7,6 +7,6 @@ runs:
   using: composite
   steps:
   - uses: "./.github/actions/test-build-setup-sdk"
-    if: "${{ inputs.use_sdk }}"
+    if: inputs.use_sdk == 'true'
   - uses: "./.github/actions/test-build-setup-no-sdk"
-    if: "!${{ inputs.use_sdk }}"
+    if: inputs.use_sdk != 'true'

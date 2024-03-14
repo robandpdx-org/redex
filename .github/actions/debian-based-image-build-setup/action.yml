@@ -20,27 +20,23 @@ runs:
     shell: bash
   - name: Add 32-bit Arch
     run: sudo dpkg --add-architecture i386 && sudo apt-get update
-    if: "${{ inputs.mode_32 }}"
+    if: inputs.mode_32 == 'true'
     shell: bash
   - name: Install Clang
     run: sudo apt-get install -y --no-install-recommends clang
-    if: "${{ inputs.install_clang }}"
+    if: inputs.install_clang == 'true'
     shell: bash
   - name: Install Clang (apt.llvm.org)
     run: |-
       sudo apt-get install -y --no-install-recommends lsb-release software-properties-common
       sudo /bin/bash -c "$(wget -O - https://apt.llvm.org/llvm.sh | sed -e 's/^add-apt-repository.*$/& -y\n& -y/')"
       ls /usr/bin/clang*
-      #sudo ln -s /usr/bin/clang-?? /usr/bin/clang
-      #sudo ln -s /usr/bin/clang++-?? /usr/bin/clang++
-    if: 0 == ${{ inputs.install_clang_llvm_org }}
+    if: 0 == inputs.install_clang_llvm_org
     shell: bash
   - name: Install Clang (apt.llvm.org)
     run: |-
       sudo apt-get install -y --no-install-recommends lsb-release software-properties-common
       sudo /bin/bash -c "$(wget -O - https://apt.llvm.org/llvm.sh | sed -e 's/^add-apt-repository.*$/& -y\n& -y/')" "llvm.sh" ${{ inputs.install_clang_llvm_org }}
       ls /usr/bin/clang*
-      #sudo ln -s /usr/bin/clang-?? /usr/bin/clang
-      #sudo ln -s /usr/bin/clang++-?? /usr/bin/clang++
-    if: "!-1 == ${{ inputs.install_clang_llvm_org }} && !0 == ${{ inputs.install_clang_llvm_org }}"
+    if: -1 != inputs.install_clang_llvm_org && 0 != inputs.install_clang_llvm_org
     shell: bash

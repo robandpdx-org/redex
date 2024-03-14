@@ -23,7 +23,7 @@ runs:
   - uses: actions/checkout@v4.1.1
     with:
       path: repo
-  - uses: "./.github/actions/debian-based-image-build-setup"
+  - uses: ./.github/actions/debian-based-image-build-setup
     with:
       mode_32: "${{ inputs.mode_32 }}"
       install_clang: "${{ inputs.install_clang }}"
@@ -32,7 +32,7 @@ runs:
     run: git restore-mtime
     working-directory: repo
     shell: bash
-  - uses: "./.github/actions/setup-build-and-test-w-make"
+  - uses: ./.github/actions/setup-build-and-test-w-make
     with:
       save_boost_cache: "${{ inputs.save_boost_cache }}"
       mode_32: "${{ inputs.mode_32 }}"
