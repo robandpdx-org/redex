@@ -8,7 +8,6 @@ runs:
       msystem: MINGW64
       pacboy: >-
         make
-        zip
         boost
         cmake
         gcc
