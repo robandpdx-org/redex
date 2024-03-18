@@ -20,7 +20,6 @@ jobs:
       with:
         job_name: ubuntu_20.04
   build-22_04:
-    # if github.event_name is schedule, run this job
     if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
     steps:
@@ -59,17 +58,21 @@ jobs:
       with:
         job_name: debian_unstable
   build-deb_stable-w-clang-llvm-org:
-    if: github.event_name != 'schedule'
     runs-on: ubuntu-20.04
     env:
       CC: clang
       CXX: clang++
-      clang_version: 0
+    strategy:
+      matrix:
+        clang_version:
+        - 0
+        - 15
+        - 17
     steps:
     - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
       with:
-        install_clang_llvm_org: "${{ env.clang_version }}"
+        install_clang_llvm_org: "${{ matrix.clang_version }}"
         job_name: debian_12_clang_upstream
   build-windows:
     runs-on: windows-latest
