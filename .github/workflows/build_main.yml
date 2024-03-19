@@ -20,15 +20,14 @@ jobs:
       with:
         job_name: ubuntu_20.04
   build-22_04:
-    if: github.event_name == 'schedule'
-    runs-on: ubuntu-latest
+    runs-on: 4-core-ubuntu-latest
     steps:
     - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
       with:
         job_name: ubuntu_22.04
   build-deb_oldoldstable:
-    runs-on: ubuntu-20.04
+    runs-on: 4-core-ubuntu-20.04
     steps:
     - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
@@ -36,14 +35,14 @@ jobs:
         use_sdk: false
         job_name: debian_10
   build-deb_stable:
-    runs-on: ubuntu-20.04
+    runs-on: 4-core-ubuntu-20.04
     steps:
     - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
       with:
         job_name: debian_12
   build-deb_stable-32:
-    runs-on: ubuntu-20.04
+    runs-on: 4-core-ubuntu-20.04
     steps:
     - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
@@ -51,14 +50,14 @@ jobs:
         mode_32: true
         job_name: debian_12_32
   build-deb_unstable:
-    runs-on: ubuntu-20.04
+    runs-on: 4-core-ubuntu-20.04
     steps:
     - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/build_debian"
       with:
         job_name: debian_unstable
   build-deb_stable-w-clang-llvm-org:
-    runs-on: ubuntu-20.04
+    runs-on: 4-core-ubuntu-20.04
     env:
       CC: clang
       CXX: clang++
@@ -81,7 +80,7 @@ jobs:
     - uses: "./.github/actions/setup-build-and-test-windows"
   build-windows-artifacts:
     if: github.event_name == 'schedule'
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4.1.1
     - uses: "./.github/actions/setup-build-and-test-windows"
