@@ -22,7 +22,7 @@ runs:
     shell: msys2 {0}
   - name: Minimal Test
     run: 'build/redex-all --show-passes | grep -E "Registered passes: [1-9][0-9]*"'
-    shell: bash.exe
+    shell: msys2 {0}
   - name: Package
     run: cd build && make -j 4 package V=0
     shell: msys2 {0}
