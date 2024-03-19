@@ -5,17 +5,18 @@ runs:
   - name: Setup for tests (Deb Testing)
     run: sudo apt-get install -y --no-install-recommends default-jdk-headless
     shell: bash
-  - name: Create cache key file
+  - name: Set cache version
+    id: cache_version
     run: |-
       echo "Cache key is: ${CACHE_VERSION}"
-      echo "${CACHE_VERSION}" > cache_version.rev
+      echo "CACHE_VERSION=${CACHE_VERSION}" >> "$GITHUB_OUTPUT"
     shell: bash
   - name: Cache SDK
     uses: actions/cache@v3.3.2
     with:
-      key: android-build-tools-{{ checksum "cache_version.rev" }}
+      key: android-build-tools-{{ steps.cache_version.outputs.CACHE_VERSION }}
       path: ~/sdk
-      restore-keys: android-build-tools-{{ checksum "cache_version.rev" }}
+      restore-keys: android-build-tools-{{ steps.cache_version.outputs.CACHE_VERSION }}
   - name: Check/Install (SDK)
     run: |-
       if [ -e ~/sdk/build-tools/25.0.3/dx ] ; then

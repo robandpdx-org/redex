@@ -30,14 +30,11 @@ runs:
   - name: Create Build Cache File
     run: echo "${{ inputs.job_name }}.${{ inputs.setup_toolchain_extra }}.${{ inputs.configure_extra }}" > /tmp/build.txt
     shell: bash
-  - name: restore_cache
+  - name: Cache build
     uses: actions/cache@v3.3.2
     with:
-      key: v1-build-cache-{{ checksum "/tmp/build.txt" }}-{{ arch }}-{{ .Branch }}-{{ .Revision }}
-      path: UPDATE_ME
-      restore-keys: |-
-        v1-build-cache-{{ checksum "/tmp/build.txt" }}-{{ arch }}-{{ .Branch }}-{{ .Revision }}
-        v1-build-cache-{{ checksum "/tmp/build.txt" }}-{{ arch }}-{{ .Branch }}-
+      key: v1-build-cache-{{ hashFiles('/tmp/build.txt') }}-{{ runner.arch }}-{{ github.ref_name }}-{{ github.sha }}
+      path: build.tar.zstd
   - name: Create build directory
     run: |-
       if [ -f  "build.tar.zstd" ] ; then zstd --decompress --stdout build.tar.zstd | tar xf - ; else mkdir -p build ; fi
@@ -58,11 +55,6 @@ runs:
   - name: Compress build directory
     run: tar cf - build | zstd -T0 -3 > build.tar.zstd
     shell: bash
-  - name: save_cache
-    uses: actions/cache@v3.3.2
-    with:
-      path: build.tar.zstd
-      key: v1-build-cache-{{ checksum "/tmp/build.txt" }}-{{ arch }}-{{ .Branch }}-{{ .Revision }}
   - name: Build tests
     run: make -j4 check TESTS= V=0
     working-directory: build
